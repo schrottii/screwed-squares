@@ -25,6 +25,12 @@ scenes["mainmenu"] = new Scene(
         });
         createText("buttonText2", 0.5, 0.6, "Settings", { size: 40, color: "#773D00" });
 
+        // How to play button
+        createButton("helpbutton", 0.3, 0.65, 0.4, 0.1, "button", () => {
+            loadScene("help");
+        });
+        createText("buttonText3", 0.5, 0.725, "How to play", { size: 40, color: "#773D00" });
+
         /*
         // Skins button
         createButton("shopbutton", 0.3, 0.65, 0.4, 0.1, "button", () => {

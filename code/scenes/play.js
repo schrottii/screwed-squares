@@ -1,7 +1,7 @@
 var round = {
     paused: true,
     timePassed: 0,
-    timeAllowed: 60,
+    timeAllowed: 30,
     screws: 0,
 
     generatedItems: 0,
@@ -72,7 +72,7 @@ function generateScrew() {
     createButton(
         me,
         (item.x + item.w * (screwNR == 1 || screwNR == 2 ? 0.1 : 0.9)),
-        (item.y + item.h * (screwNR == 0 || screwNR == 1 ? -0.25 : 0.65)),
+        (item.y - 0.05 + item.h * (screwNR == 0 || screwNR == 1 ? 0 : 0.9)),
         0.1,
         0.1,
         "screw1",
@@ -80,13 +80,15 @@ function generateScrew() {
             let me = objects[c];
 
             // don't do anything if disabled or not the front item
-            if (me.power == false || round.paused == true || !me.item.top) return false;
+            if (me.power == false || round.paused == true || !me.item.top || me.image != "screw1") return false;
+            me.image = "screw2";
 
             // is this the right screw?
             if (me.screwNR == me.item.order[me.item.order.length - 1]) {
                 // correct one, make it disappear
-                objects[c].power = false;
                 me.item.order.pop();
+                setTimeout(() => me.image = "screw3", 250);
+                setTimeout(() => me.power = false, 500);
 
                 // +1 screw!
                 round.screws++;
@@ -106,6 +108,7 @@ function generateScrew() {
             }
             else {
                 round.timeAllowed -= 5;
+                setTimeout(() => me.image = "screw1", 250);
             }
         },
         { centered: true, quadratic: true }
@@ -123,7 +126,7 @@ scenes["play"] = new Scene(
         round = {
             paused: true,
             timePassed: 0,
-            timeAllowed: 60,
+            timeAllowed: 30,
             screws: 0,
 
             generatedItems: 0,
@@ -138,7 +141,7 @@ scenes["play"] = new Scene(
         createButton("logo", 0.1, 0.0125, 0.075, 0.075, "logo", () => {
             round.paused = true;
             game.stats.ulTime += round.timePassed;
-            if (game.stats.ulTime > game.stats.ulHiTime) game.stats.ulHiTime = game.stats.ulTime;
+            if (round.timePassed > game.stats.ulHiTime) game.stats.ulHiTime = round.timePassed;
             save();
             loadScene("mainmenu");
         }, { quadratic: true, centered: true });
@@ -201,7 +204,7 @@ scenes["play"] = new Scene(
         if (round.timePassed >= round.timeAllowed) {
             round.paused = true;
             game.stats.ulTime += round.timePassed;
-            if (game.stats.ulTime > game.stats.ulHiTime) game.stats.ulHiTime = game.stats.ulTime;
+            if (round.timePassed > game.stats.ulHiTime) game.stats.ulHiTime = round.timePassed;
 
             createImage("diaBg", 0.1, 0.3, 0.8, 0.4, "button");
             createText("diaTxt", 0.5, 0.4, "Game over", { size: 48, color: "#773D00" });

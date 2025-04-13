@@ -46,8 +46,8 @@ scenes["stats"] = new Scene(
         objects["stat1"].text = "Total Playtime: " + game.stats.playtime.toFixed(0) + "s";
         objects["stat2"].text = "(Unlimited) Screws: " + game.stats.ulScrews;
         objects["stat3"].text = "Highscore: " + game.stats.ulHiScrews;
-        objects["stat4"].text = "(Unlimited) Time Survived: " + game.stats.ulTime;
-        objects["stat5"].text = "Highscore: " + game.stats.ulHiTime;
+        objects["stat4"].text = "(Unlimited) Time Survived: " + game.stats.ulTime.toFixed(0) + "s";
+        objects["stat5"].text = "Highscore: " + game.stats.ulHiTime.toFixed(0) + "s";
 
         objects["playerName"].text = game.name;
     }
