@@ -6,7 +6,12 @@ class SaveGame {
         this.name = "Player";
 
         this.stats = {
-            highscore: 0,
+            playtime: 0,
+
+            ulScrews: 0,
+            ulHiScrews: 0,
+            ulTime: 0,
+            ulHiTime: 0,
         }
         this.settings = {
             music: true,
@@ -16,6 +21,9 @@ class SaveGame {
     loadFromSaveGame(sg) {
         this.id = sg.id;
         this.name = sg.name;
+
+        this.stats = sg.stats;
+        this.settings = sg.settings;
     }
 }
 

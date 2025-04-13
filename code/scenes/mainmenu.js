@@ -10,18 +10,18 @@ scenes["mainmenu"] = new Scene(
         createSquare("bg", 0, 0, 1, 1, "#EA7623");
         createSquare("bg2", 0, 0.3, 1, 0.65, "#FFBF66");
 
-        // by tpot
         createImage("logo", 0.5, 0, 0.4, 0.3, "logo", { quadratic: true, centered: true });
         createText("version", 0.975, 0.975, "Version " + gameVersion, { color: "#773D00", size: 40, align: "right" });
 
         // Play button
         createButton("playbutton", 0.3, 0.4, 0.4, 0.1, "button", () => {
+            loadScene("play");
         });
         createText("buttonText1", 0.5, 0.475, "Unlimited Mode", { size: 40, color: "#773D00" });
 
         // Stats button
         createButton("playerbutton", 0.3, 0.525, 0.4, 0.1, "button", () => {
-            loadScene("player");
+            loadScene("settings");
         });
         createText("buttonText2", 0.5, 0.6, "Settings", { size: 40, color: "#773D00" });
 
@@ -45,16 +45,16 @@ scenes["mainmenu"] = new Scene(
         }, { quadratic: true });
         createText("wButtonText1", 0.1, 0.44, "Discord", { color: "#773D00", size: 32, align: "center" });
 
-        createButton("patchnotesbutton", 0.02, 0.45, 0.08, 0.08, "whiteNotes", () => {
-            loadScene("patchnotes");
-        }, { quadratic: true });
-        createText("wButtonText2", 0.1, 0.54, "Patch Notes", { color: "#773D00", size: 32, align: "center" });
-
-        createButton("websitebutton", 0.02, 0.55, 0.08, 0.08, "whiteWebsite", () => {
+        createButton("websitebutton", 0.02, 0.45, 0.08, 0.08, "whiteWebsite", () => {
             window.open("https://schrottii.github.io/");
         }, { quadratic: true });
-        createText("wButtonText3", 0.1, 0.64, "Website", { color: "#773D00", size: 32, align: "center" });
-
+        createText("wButtonText3", 0.1, 0.54, "Website", { color: "#773D00", size: 32, align: "center" });
+        /*
+        createButton("patchnotesbutton", 0.02, 0.55, 0.08, 0.08, "whiteNotes", () => {
+            loadScene("patchnotes");
+        }, { quadratic: true });
+        createText("wButtonText2", 0.1, 0.64, "Patch Notes", { color: "#773D00", size: 32, align: "center" });
+        */
         createButton("statsbutton", 0.02, 0.65, 0.08, 0.08, "whiteStats", () => {
             loadScene("stats");
         }, { quadratic: true });
@@ -65,9 +65,9 @@ scenes["mainmenu"] = new Scene(
         })
         createText("donateText", 0.25, 0.875 + 0.1 * 2 / 3, "Donate", { color: "#773D00", size: 40 });
 
-        wggjAudio.src = "audio/music.mp3";
-        //wggjAudio.volume = game.settings.music ? 1 : 0;
-        //if (game.settings.music) wggjAudio.play();
+        wggjAudio.src = "audio/game-music-loop-8-145362.mp3";
+        wggjAudio.volume = game.settings.music ? 1 : 0;
+        if (game.settings.music) wggjAudio.play();
     },
     (tick) => {
         // Loop

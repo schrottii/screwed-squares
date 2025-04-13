@@ -32,28 +32,22 @@ scenes["stats"] = new Scene(
         createText("buttonText3", 0.65, 0.775, "Import", { size: 40 });
 
 
-        createText("stat1", 0.5, 0.35, "stat", { size: 30 });
-        createText("stat2", 0.5, 0.4, "stat", { size: 30 });
-        createText("stat3", 0.5, 0.45, "stat", { size: 30 });
-        createText("stat4", 0.5, 0.5, "stat", { size: 30 });
-        createText("stat5", 0.5, 0.55, "stat", { size: 30 });
-        createText("stat6", 0.5, 0.6, "stat", { size: 30 });
-        createText("stat7", 0.5, 0.65, "stat", { size: 30 });
-        createText("stat8", 0.5, 0.7, "stat", { size: 30 });
+        createText("stat1", 0.5, 0.35, "", { size: 30 });
+        createText("stat2", 0.5, 0.4, "", { size: 30 });
+        createText("stat3", 0.5, 0.45, "", { size: 30 });
+        createText("stat4", 0.5, 0.5, "", { size: 30 });
+        createText("stat5", 0.5, 0.55, "", { size: 30 });
+        createText("stat6", 0.5, 0.6, "", { size: 30 });
+        createText("stat7", 0.5, 0.65, "", { size: 30 });
+        createText("stat8", 0.5, 0.7, "", { size: 30 });
     },
     (tick) => {
         // Loop
-
-        objects["stat1"].text = "Highscore: " + game.stats.highscore;
-        /*
-        objects["stat2"].text = "Total Plays: " + game.stats.totalplays;
-        objects["stat3"].text = "Total Points: " + game.stats.totalpoints;
-        objects["stat4"].text = "Total Jumps: " + game.stats.totaljumps;
-        objects["stat5"].text = "Total Time: " + Math.floor(game.stats.totaltime / 1000);
-        objects["stat6"].text = "Total Coins: " + game.stats.totalcoins;
-        objects["stat7"].text = "Skins: " + game.skins.length + "/" + skins.length;
-        objects["stat8"].text = "Skills: " + game.skills.length + "/" + skills.length;
-        */
+        objects["stat1"].text = "Total Playtime: " + game.stats.playtime.toFixed(0) + "s";
+        objects["stat2"].text = "(Unlimited) Screws: " + game.stats.ulScrews;
+        objects["stat3"].text = "Highscore: " + game.stats.ulHiScrews;
+        objects["stat4"].text = "(Unlimited) Time Survived: " + game.stats.ulTime;
+        objects["stat5"].text = "Highscore: " + game.stats.ulHiTime;
 
         objects["playerName"].text = game.name;
     }
