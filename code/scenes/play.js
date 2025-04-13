@@ -1,5 +1,7 @@
 var round = {
     paused: true,
+    over: false,
+
     timePassed: 0,
     timeAllowed: 30,
     screws: 0,
@@ -120,11 +122,22 @@ function generateScrew() {
     if (item.screwgen.length == 0) round.toGenerate -= 1;
 }
 
+function leavePlay() {
+    round.paused = true;
+    game.stats.ulTime += round.timePassed;
+    if (round.timePassed > game.stats.ulHiTime) game.stats.ulHiTime = round.timePassed;
+
+    save();
+    loadScene("mainmenu");
+}
+
 scenes["play"] = new Scene(
     () => {
         // Init
         round = {
             paused: true,
+            over: false,
+
             timePassed: 0,
             timeAllowed: 30,
             screws: 0,
@@ -139,11 +152,7 @@ scenes["play"] = new Scene(
 
         // Header
         createButton("logo", 0.1, 0.0125, 0.075, 0.075, "logo", () => {
-            round.paused = true;
-            game.stats.ulTime += round.timePassed;
-            if (round.timePassed > game.stats.ulHiTime) game.stats.ulHiTime = round.timePassed;
-            save();
-            loadScene("mainmenu");
+            leavePlay();
         }, { quadratic: true, centered: true });
         createText("modeText", 0.5, 0.04, "Unlimited Mode", { size: 30, color: "#773D00", noScaling: true });
 
@@ -162,7 +171,7 @@ scenes["play"] = new Scene(
     },
     (tick) => {
         // Loop
-        if (!round.paused) {
+        if (!round.paused && !round.over) {
             round.timePassed += tick;
         }
         else {
@@ -203,16 +212,14 @@ scenes["play"] = new Scene(
         // Game over
         if (round.timePassed >= round.timeAllowed) {
             round.paused = true;
-            game.stats.ulTime += round.timePassed;
-            if (round.timePassed > game.stats.ulHiTime) game.stats.ulHiTime = round.timePassed;
+            round.over = true;
 
             createImage("diaBg", 0.1, 0.3, 0.8, 0.4, "button");
             createText("diaTxt", 0.5, 0.4, "Game over", { size: 48, color: "#773D00" });
             createText("diaTxt2", 0.5, 0.45, "Screws: " + round.screws, { size: 48, color: "#773D00" });
             createText("diaTxt3", 0.5, 0.5, "Time: " + round.timePassed.toFixed(0) + "s", { size: 48, color: "#773D00" });
             createButton("diaButton", 0.2, 0.55, 0.6, 0.1, "button", () => {
-                save();
-                loadScene("mainmenu");
+                leavePlay();
             });
             createText("diaButtonTxt", 0.5, 0.625, "Return", { size: 48, color: "#773D00" });
         }
