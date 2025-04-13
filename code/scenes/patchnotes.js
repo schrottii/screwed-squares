@@ -1,4 +1,4 @@
-var gameVersion = "1.0 Beta";
+var gameVersion = "1.0";
 var newestVersion = 0;
 var selectedVersion = newestVersion;
 
