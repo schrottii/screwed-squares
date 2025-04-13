@@ -42,7 +42,7 @@ function generateItem() {
     // decide how many screws this has, and then the order
     // top right = 0, top left = 1, bottom left = 2, bottom right = 3
     let randAdd = -1;
-    item.screws = 2 + Math.floor(2 * Math.random());
+    item.screws = 2 + Math.floor(3 * Math.random());
 
     item.order = [];
     item.screwgen = [];
