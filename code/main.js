@@ -1,11 +1,14 @@
 images = {
     "logo": "fulllogo.png",
     "button": "button.png",
+    "buttonOff": "buttonOff.png",
     "squares": "squares.png",
 
     "screw1": "screw1.png",
     "screw2": "screw2.png",
     "screw3": "screw3.png",
+
+    "world1": "world1.png",
 
     whiteDiscord: "white-dc-logo.png",
     whiteNotes: "white-patch-notes.png",
@@ -20,6 +23,9 @@ wggjLoop();
 function customWGGJLoop(tick) {
     game.stats.playtime += tick / 1000;
 }
+
+var sound = document.getElementById("sound");
+var sound2 = document.getElementById("sound2");
 
 function isMobile() {
     if (game.settings.device == "pc") return false;

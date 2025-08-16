@@ -1,5 +1,5 @@
-var gameVersion = "1.0";
-var newestVersion = 0;
+var gameVersion = "1.1";
+var newestVersion = 1;
 var selectedVersion = newestVersion;
 
 const patchnotes = {
@@ -8,7 +8,31 @@ const patchnotes = {
         `
 - Game release
 `
-    ],
+        ],
+    "v1.1":
+        [
+            `
+-> Worlds:
+- A new way to play the game! Instead of endless random spawns, play fixed levels
+- Every level has different time, squares and screws
+- The Squares are always in the same places, and Screws usually too (they CAN be random)
+- Complete the levels one by one, locked levels are gray
+- Added World 1
+- World 1: Added the first five levels
+- More will come
+
+-> Audio:
+- Replaced both menu music and game music, with new songs I made
+- Music no longer resets between menus
+- Added five sound effects (screws spawning, unscrewing, wrong screw, time running out)
+- Added sound effect setting
+
+-> Other:
+- Added Patch Notes menu
+- Added buttons for Worlds and Patch Notes to main menu
+- Increased max. name length from 12 to 16
+`
+        ]
 }
 
 scenes["patchnotes"] = new Scene(

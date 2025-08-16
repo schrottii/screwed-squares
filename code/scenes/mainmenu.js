@@ -4,6 +4,9 @@ light: #FFBF66
 text   #773D00
 */
 
+var playMode = "";
+var playLevel = -1;
+
 scenes["mainmenu"] = new Scene(
     () => {
         // Init
@@ -13,31 +16,32 @@ scenes["mainmenu"] = new Scene(
         createImage("logo", 0.5, 0, 0.4, 0.3, "logo", { quadratic: true, centered: true });
         createText("version", 0.975, 0.975, "Version " + gameVersion, { color: "#773D00", size: 40, align: "right" });
 
+        // Skins button
+        createButton("worldsbutton", 0.3, 0.35, 0.4, 0.1, "button", () => {
+            loadScene("worlds");
+        });
+        createText("buttonText4", 0.5, 0.425, "Worlds", { size: 40, color: "#773D00" });
+
         // Play button
-        createButton("playbutton", 0.3, 0.4, 0.4, 0.1, "button", () => {
+        createButton("playbutton", 0.3, 0.475, 0.4, 0.1, "button", () => {
+            playMode = "unlimited";
             loadScene("play");
         });
-        createText("buttonText1", 0.5, 0.475, "Unlimited Mode", { size: 40, color: "#773D00" });
+        createText("buttonText1", 0.5, 0.55, "Unlimited Mode", { size: 40, color: "#773D00" });
 
         // Stats button
-        createButton("playerbutton", 0.3, 0.525, 0.4, 0.1, "button", () => {
+        createButton("playerbutton", 0.3, 0.6, 0.4, 0.1, "button", () => {
             loadScene("settings");
         });
-        createText("buttonText2", 0.5, 0.6, "Settings", { size: 40, color: "#773D00" });
+        createText("buttonText2", 0.5, 0.675, "Settings", { size: 40, color: "#773D00" });
 
         // How to play button
-        createButton("helpbutton", 0.3, 0.65, 0.4, 0.1, "button", () => {
+        createButton("helpbutton", 0.3, 0.725, 0.4, 0.1, "button", () => {
             loadScene("help");
         });
-        createText("buttonText3", 0.5, 0.725, "How to play", { size: 40, color: "#773D00" });
+        createText("buttonText3", 0.5, 0.795, "How to play", { size: 40, color: "#773D00" });
 
         /*
-        // Skins button
-        createButton("shopbutton", 0.3, 0.65, 0.4, 0.1, "button", () => {
-            loadScene("shop");
-        });
-        createText("buttonText3", 0.5, 0.725, "Shop", { size: 40, color: "#773D00" });
-
         // Settings button
         createButton("settingsbutton", 0.3, 0.775, 0.4, 0.1, "button", () => {
             loadScene("settings");
@@ -55,12 +59,12 @@ scenes["mainmenu"] = new Scene(
             window.open("https://schrottii.github.io/");
         }, { quadratic: true });
         createText("wButtonText3", 0.1, 0.54, "Website", { color: "#773D00", size: 32, align: "center" });
-        /*
+        
         createButton("patchnotesbutton", 0.02, 0.55, 0.08, 0.08, "whiteNotes", () => {
             loadScene("patchnotes");
         }, { quadratic: true });
         createText("wButtonText2", 0.1, 0.64, "Patch Notes", { color: "#773D00", size: 32, align: "center" });
-        */
+        
         createButton("statsbutton", 0.02, 0.65, 0.08, 0.08, "whiteStats", () => {
             loadScene("stats");
         }, { quadratic: true });
@@ -71,8 +75,8 @@ scenes["mainmenu"] = new Scene(
         })
         createText("donateText", 0.25, 0.875 + 0.1 * 2 / 3, "Donate", { color: "#773D00", size: 40 });
 
-        wggjAudio.src = "audio/game-music-loop-8-145362.mp3";
-        wggjAudio.volume = game.settings.music ? 1 : 0;
+        if (!wggjAudio.src.includes("audio/Im_Screwed.mp3")) wggjAudio.src = "audio/Im_Screwed.mp3";
+        wggjAudio.volume = game.settings.music ? 0.5 : 0;
         if (game.settings.music) wggjAudio.play();
     },
     (tick) => {
