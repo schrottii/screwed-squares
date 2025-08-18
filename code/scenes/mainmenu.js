@@ -14,7 +14,7 @@ scenes["mainmenu"] = new Scene(
         createSquare("bg2", 0, 0.3, 1, 0.65, "#FFBF66");
 
         createImage("logo", 0.5, 0, 0.4, 0.3, "logo", { quadratic: true, centered: true });
-        createText("version", 0.975, 0.975, "Version " + gameVersion, { color: "#773D00", size: 40, align: "right" });
+        createText("version", 0.975, 0.985, "Version " + gameVersion, { color: "#773D00", size: 40, align: "right" });
 
         // Skins button
         createButton("worldsbutton", 0.3, 0.35, 0.4, 0.1, "button", () => {

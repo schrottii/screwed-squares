@@ -44,10 +44,12 @@ scenes["stats"] = new Scene(
     (tick) => {
         // Loop
         objects["stat1"].text = "Total Playtime: " + game.stats.playtime.toFixed(0) + "s";
-        objects["stat2"].text = "(Unlimited) Screws: " + game.stats.ulScrews;
-        objects["stat3"].text = "Highscore: " + game.stats.ulHiScrews;
-        objects["stat4"].text = "(Unlimited) Time Survived: " + game.stats.ulTime.toFixed(0) + "s";
-        objects["stat5"].text = "Highscore: " + game.stats.ulHiTime.toFixed(0) + "s";
+        objects["stat2"].text = "(Unlimited) Screws: " + game.stats.ulScrews + " (Best: " + game.stats.ulHiScrews + ")";
+        objects["stat3"].text = "(Unlimited) Time Survived: " + game.stats.ulTime.toFixed(0) + "s" + " (Best: " + game.stats.ulHiTime.toFixed(0) + ")";
+        objects["stat4"].text = "(Worlds) Screws: " + game.stats.woScrews + " (Best: " + game.stats.woHiScrews + ")";
+        objects["stat5"].text = "(Worlds) Time Survived: " + game.stats.woTime.toFixed(0) + "s" + " (Best: " + game.stats.woHiTime.toFixed(0) + "s)";
+        objects["stat6"].text = "(Worlds) Levels completed: " + game.stats.woCompletions;
+        objects["stat7"].text = "(Worlds) Levels failed: " + game.stats.woFails;
 
         objects["playerName"].text = game.name;
     }

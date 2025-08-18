@@ -1,5 +1,5 @@
-var gameVersion = "1.1";
-var newestVersion = 1;
+var gameVersion = "1.1.1";
+var newestVersion = 2;
 var selectedVersion = newestVersion;
 
 const patchnotes = {
@@ -31,6 +31,21 @@ const patchnotes = {
 - Added Patch Notes menu
 - Added buttons for Worlds and Patch Notes to main menu
 - Increased max. name length from 12 to 16
+`
+        ],
+    "v1.1.1":
+        [
+            `
+-> Worlds:
+- New Setting: Reset Worlds progress
+- Changed size of level buttons (they looked weird on mobile)
+- Added how to play for Worlds
+
+-> Other:
+- Moved the highscore stats into their normal ones
+- Added stats for Worlds
+- Improved text scaling
+- Slightly changed Unlimited Mode Square spawning (x-axis)
 `
         ]
 }
@@ -67,7 +82,7 @@ scenes["patchnotes"] = new Scene(
         createText("versionText", 0.5, 0.185, "Version v" + gameVersion, { size: 40 });
 
         for (vtc = 0; vtc < 32; vtc++) {
-            createText("text" + vtc, 0.1125, 0.225 + (0.02 * vtc), "", { size: 20, align: "left" });
+            createText("text" + vtc, 0.1125, 0.225 + (0.02 * vtc), "", { size: 24, align: "left" });
         }
     },
     (tick) => {
@@ -83,11 +98,11 @@ scenes["patchnotes"] = new Scene(
             if (vt < currentVersionText.length) {
                 objects["text" + vt].text = currentVersionText[vt];
                 if (objects["text" + vt].text.substr(0, 2) == "->") {
-                    objects["text" + vt].fontSize = 24;
+                    objects["text" + vt].fontSize = 28;
                     objects["text" + vt].x = 0.1125;
                 }
                 else {
-                    objects["text" + vt].fontSize = 20;
+                    objects["text" + vt].fontSize = 24;
                     objects["text" + vt].x = 0.125;
                 }
             }

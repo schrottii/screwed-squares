@@ -4,6 +4,8 @@ scenes["settings"] = new Scene(
         function updateSettings() {
             objects["settingText1"].text = "Music " + (game.settings.music ? "ON" : "OFF");
             objects["settingText2"].text = "Sounds " + (game.settings.sounds ? "ON" : "OFF");
+            objects["settingText3"].text = game.completedLevels.length == 0 ? "-" : "Reset Worlds";
+
             //objects["settingText2"].text = "Device " + game.settings.device.substr(0, 1).toUpperCase() + game.settings.device.substr(1);
         }
 
@@ -24,11 +26,21 @@ scenes["settings"] = new Scene(
             updateSettings();
         });
         createText("settingText1", 0.5, 0.375, "?", { size: 40 });
-        createButton("setting2", 0.3, 0.5, 0.4, 0.1, "button", () => {
+
+        createButton("setting2", 0.3, 0.45, 0.4, 0.1, "button", () => {
             game.settings.sounds = !game.settings.sounds;
             updateSettings();
         });
-        createText("settingText2", 0.5, 0.575, "?", { size: 40 });
+        createText("settingText2", 0.5, 0.525, "?", { size: 40 });
+
+        createButton("setting3", 0.3, 0.6, 0.4, 0.1, "button", () => {
+            if (confirm("Do you really want to reset your progress in Worlds? (Stats are kept)") == true) {
+                game.completedLevels = [];
+                updateSettings();
+            }
+        });
+        createText("settingText3", 0.5, 0.675, "?", { size: 40 });
+
         /*
         createButton("setting2", 0.3, 0.45, 0.4, 0.1, "button", () => {
             switch (game.settings.device) {

@@ -23,7 +23,7 @@ scenes["worlds"] = new Scene(
         createSquare("bg2", 0, 0.3, 1, 0.65, "#FFBF66");
 
         createImage("logo", 0.5, 0, 0.4, 0.3, "logo", { quadratic: true, centered: true });
-        createText("version", 0.975, 0.975, "Version " + gameVersion, { color: "#773D00", size: 40, align: "right" });
+        createText("version", 0.975, 0.985, "Version " + gameVersion, { color: "#773D00", size: 40, align: "right" });
 
         // Back button
         createButton("backbutton", 0.4, 0.875, 0.2, 0.1, "button", () => {
@@ -33,19 +33,30 @@ scenes["worlds"] = new Scene(
         createText("buttonText", 0.5, 0.95, "Back", { size: 40 });
 
         createButton("world1", 0.5, 0.4, 0.2, 0.2, "world1", () => {
-            setTimeout("toggleWorldsLevels(1)", 200);
+            setTimeout("toggleWorldsLevels(1)", 100);
         }, { quadratic: true, centered: true });
         createText("world1t", 0.5, 0.7, "World 1", { size: 40, color: "#773D00" });
 
+        createContainer("containerLevels", 0, 0.4, 1, 0.5, { XScroll: false, XLimit: [0.001, 3] }, []);
+
+        let w = 0.15;
         for (let i = 1; i <= 5; i++) {
-            createButton("level_" + i, 0.2 + i * 0.1, 0.4, 0.2, 0.2, "button", function() {
+            createButton("level_" + i, 0.125 + ((i - 1) * w), 0.45, w, w, "button", function() {
                 if (this.image == "button" && this.power) {
                     loadLevel(i);
                 }
-            }, { quadratic: true, centered: true, power: false });
-            createText("level_" + i + "t", 0.2 + i * 0.1, 0.525, i, { size: 40, color: "#773D00", power: false });
+            }, { power: false });
+            createText("level_" + i + "t", 0.125 + ((i - 1) * w) + (w / 2), 0.45 + (w * 2/3), i, { size: 40, color: "#773D00", power: false });
             objects["level_" + i].power = false;
             objects["level_" + i + "t"].power = false;
+
+            objects["containerLevels"].children.push("level_" + i);
+            objects["containerLevels"].children.push("level_" + i + "t");
+        }
+
+        if (!isMobile()) objects["containerLevels"].XLimit[1] = 0.002;
+        else {
+            objects["containerLevels"].XLimit[1] = objects["containerLevels"].children.length / 2 * w;
         }
     },
     (tick) => {

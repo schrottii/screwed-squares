@@ -24,6 +24,10 @@ function customWGGJLoop(tick) {
     game.stats.playtime += tick / 1000;
 }
 
+function wggjUpdateTextScaling() {
+    wggjTextScaling = 0.25 + 0.5 * (wggjCanvasWidth / 1480);
+}
+
 var sound = document.getElementById("sound");
 var sound2 = document.getElementById("sound2");
 

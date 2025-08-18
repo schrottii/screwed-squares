@@ -5,14 +5,18 @@ var helpText =
         "Squares appear with 1-4 Screws on them",
         "Tap them in the right order to unscrew",
         "(Newest Square first, newest Screw first)",
+        "+5s for every Square cleared",
+        "-5s for every wrong Screw",
+        "",
+        "World Mode:",
+        "Select a World and a Level",
+        "Every level has a set duration and Squares",
+        "Complete one level to unlock the next",
         "",
         "Unlimited Mode:",
         "You start with 30 seconds",
         "Every round, 3 Squares appear",
-        "+5s for every Square cleared",
-        "-5s for every wrong Screw",
         "Get as far as you can! Good luck!",
-
     ];
 
 scenes["help"] = new Scene(

@@ -17,15 +17,16 @@ var generateScrewCounter = 0;
 function generateItem() {
     // function to generate one of those squares
     let me = "item" + round.generatedItems;
+    let w, h, x, y;
 
     // the main square, here its variables are saved (OOP)
     // w and h are done beforehand so they can be subtracted from the x and y to avoid going out of bounds
 
     if (playMode == "unlimited") {
-        x = 0 + Math.random() * (1 - w);
-        y = 0.175 + Math.random() * (0.75 - h);
         w = Math.max(0.2, 0.6 * Math.random());
         h = Math.max(0.1, 0.4 * Math.random());
+        x = 0 + Math.random() * (0.975 - w);
+        y = 0.175 + Math.random() * (0.75 - h);
     }
     if (playMode == "worlds") {
         if (round.generatedItems >= currentLevel().squares.length) return false;
