@@ -98,10 +98,12 @@ function generateScrew() {
         if (game.settings.sounds) sound.play();
     }
 
+    let y = (item.y - 0.05 + item.h * (screwNR == 0 || screwNR == 1 ? 0 : 0.9));
+
     createButton(
         me,
         (item.x + item.w * (screwNR == 1 || screwNR == 2 ? 0.1 : 0.9)),
-        (item.y - 0.05 + item.h * (screwNR == 0 || screwNR == 1 ? 0 : 0.9)),
+        y,
         0.1,
         0.1,
         "screw1",
@@ -147,7 +149,7 @@ function generateScrew() {
                     me.item.power = false;
                     round.activeItems -= 1;
 
-                    round.timeAllowed += 5;
+                    if (!game.settings.hardmode) round.timeAllowed += 5;
                 }
             }
             else {
@@ -164,8 +166,31 @@ function generateScrew() {
     objects[me].screwNR = screwNR;
     objects[me].item = item;
 
+    createAnimation("screw" + me, me, (t, d, a) => t.y = y - 0.05 * (1 - (a.dur / a.maxDur)), 0.33);
+
     generateScrewCounter -= 1;
     if (item.screwgen.length == 0) round.toGenerate -= 1;
+}
+
+function generateSandkorn(s) {
+    if (s >= currentLevel().features["sandstorm"].amount) return false;
+    if (objects["sandkorn" + s] != undefined) {
+        let obj = Object.assign({}, objects["sandkorn" + s]);
+        delete objects["sandkorn" + s];
+        createSquare("sandkorn" + s, obj.x, obj.y, obj.w, obj.h, obj.color, obj.config);
+        objects["sandkorn" + s].speedmod = 0.5 * Math.random() + 0.5;
+    }
+    else {
+    createSquare("sandkorn" + s, -0.1 + -0.7 * Math.random(), 0.7 * Math.random() + 0.2, 0.01, 0.01, "yellow", { quadratic: true });
+    objects["sandkorn" + s].speedmod = 0.5 * Math.random() + 0.5;
+        createAnimation("anisand" + s, "sandkorn" + s, (t, d) => {
+        if (t == undefined) return false;
+        t.x += 0.5 * d * t.speedmod * currentLevel().features["sandstorm"].speed;
+        if (Math.random() > 0.99) t.y -= 0.01;
+        if (Math.random() > 0.99) t.y += 0.01;
+        if (t.x > 1.1) t.x = -0.1;
+    }, 0);
+    }
 }
 
 function leavePlay() {
@@ -201,6 +226,7 @@ scenes["play"] = new Scene(
 
         createSquare("bg", 0, 0, 1, 1, "#EA7623");
         createSquare("bg2", 0, 0.15, 1, 0.8, "#FFBF66");
+        if (playMode == "worlds") createImage("bg3", 0, 0.15, 1, 0.8, "world" + playWorld + "_bg");
 
         // Header
         createButton("logo", 0.1, 0.0125, 0.075, 0.075, "logo", () => {
@@ -215,12 +241,24 @@ scenes["play"] = new Scene(
         createSquare("timeRemaining", 0, 0.1, 0.1, 0.05, "lightblue");
         createText("timeText", 0.5, 0.14, "0", { size: 30, color: "red", noScaling: true });
 
-
+        // round preparations
         round.toGenerate = playMode == "unlimited" ? 3 : Math.min(currentLevel().maxSquares, currentLevel().squares.length);
-        if (playMode == "worlds") round.timeAllowed = currentLevel().time;
+        if (playMode == "worlds") round.timeAllowed = game.settings.hardmode ? Math.floor(currentLevel().time / 2) : currentLevel().time;
         if (playMode == "worlds") objects["modeText"].text = currentLevel().name;
 
-        if (!wggjAudio.src.includes("audio/Im_Squared.mp3")) wggjAudio.src = "audio/Im_Squared.mp3";
+        // AUDIO / MUSIC
+        let aaudio = "";
+        if (playMode == "unlimited") {
+            aaudio = "audio/Im_Squared.mp3";
+        }
+        else {
+            aaudio = [
+                "audio/Kittearth_SCSQ.mp3",
+                "audio/Pyrascrewa.mp3"
+            ][playWorld - 1];
+        }
+
+        if (!wggjAudio.src.includes(aaudio)) wggjAudio.src = aaudio;
         wggjAudio.volume = game.settings.music ? 0.5 : 0;
         if (game.settings.music) wggjAudio.play();
     },
@@ -237,6 +275,13 @@ scenes["play"] = new Scene(
                         // new item
                         generateItem();
                         generateTime = 0.200 / (1 + round.screws / 100);
+
+                        // sandstorm
+                        if (currentLevel().features["sandstorm"] != undefined) {
+                            for (let s = 0; s < currentLevel().features["sandstorm"].amount; s++) {
+                                generateSandkorn(s);
+                            }
+                        }
                     }
                     else {
                         // screw for an existing item
@@ -270,7 +315,7 @@ scenes["play"] = new Scene(
         objects["screwsAmount"].text = "Screws: " + round.screws;
 
         // Win
-        if (playMode == "worlds" && round.generatedItems >= currentLevel().squares.length && round.activeItems == 0) {
+        if (playMode == "worlds" && round.generatedItems >= currentLevel().squares.length && round.activeItems == 0 && !round.over) {
             // you got 'em all
             round.paused = true;
             round.over = true;
@@ -286,10 +331,17 @@ scenes["play"] = new Scene(
                 leavePlay();
             });
             createText("diaButtonTxt", 0.5, 0.625, "Return", { size: 48, color: "#773D00" });
+
+            createAnimation("winAni1", "diaBg", (t, d, a) => t.y = 0.3 - 1 * (1 - (a.dur / a.maxDur)), 1);
+            createAnimation("winAni2", "diaTxt", (t, d, a) => t.y = 0.4 - 1 * (1 - (a.dur / a.maxDur)), 1);
+            createAnimation("winAni3", "diaTxt2", (t, d, a) => t.y = 0.45 - 1 * (1 - (a.dur / a.maxDur)), 1);
+            createAnimation("winAni4", "diaTxt3", (t, d, a) => t.y = 0.5 - 1 * (1 - (a.dur / a.maxDur)), 1);
+            createAnimation("winAni5", "diaButton", (t, d, a) => t.y = 0.55 - 1 * (1 - (a.dur / a.maxDur)), 1);
+            createAnimation("winAni6", "diaButtonTxt", (t, d, a) => t.y = 0.625 - 1 * (1 - (a.dur / a.maxDur)), 1);
         }
 
         // Game over
-        if (round.timePassed >= round.timeAllowed) {
+        if (round.timePassed >= round.timeAllowed && !round.over) {
             round.paused = true;
             round.over = true;
 

@@ -1,5 +1,5 @@
-var gameVersion = "1.1.1";
-var newestVersion = 2;
+var gameVersion = "1.2";
+var newestVersion = 3;
 var selectedVersion = newestVersion;
 
 const patchnotes = {
@@ -12,6 +12,7 @@ const patchnotes = {
     "v1.1":
         [
             `
+2025-08-16 v1.1:
 -> Worlds:
 - A new way to play the game! Instead of endless random spawns, play fixed levels
 - Every level has different time, squares and screws
@@ -36,6 +37,7 @@ const patchnotes = {
     "v1.1.1":
         [
             `
+2025-08-18 v1.1.1:
 -> Worlds:
 - New Setting: Reset Worlds progress
 - Changed size of level buttons (they looked weird on mobile)
@@ -46,6 +48,35 @@ const patchnotes = {
 - Added stats for Worlds
 - Improved text scaling
 - Slightly changed Unlimited Mode Square spawning (x-axis)
+`
+        ],
+    "v1.2":
+        [
+            `
+2025-08-27 v1.2:
+-> Worlds:
+- World 1: added levels 6 - 10
+- Added World 2 with 10 levels
+- 5 -> 20 levels total
+- Levels list now scrollable
+- Added unique backgrounds and music for the Worlds
+- Added "reward" for completing all 20 levels
+
+-> Sandstorm:
+- A new gameplay mechanic found in World 2
+- The little flying sand can make Screws harder to see
+- Amount of sand and speed differs from level to level
+
+-> Music:
+- Added new world 1 song: Kittearth SCSQ
+- Added world 2 song: Pyrascrewa
+
+-> Other:
+- New Setting: Hard Mode 
+- disables +5s bonus time after finishing a set, halves time in World Mode
+- Added animation for Screws appearing
+- Added animation for win screen
+- Updated WGGJ from v1.3 to v1.4.1
 `
         ]
 }

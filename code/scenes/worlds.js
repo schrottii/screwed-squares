@@ -2,7 +2,11 @@ function toggleWorldsLevels(world, back = false) {
     for (let o in objects) {
         if (o.includes("world")) objects[o].power = back;
         if (o.includes("level")) {
-            if (!o.includes("t") && (o.split("_")[1] == 1 || game.completedLevels.includes(worlds.world1[parseInt(o.split("_")[1]) - 2].getSaveID()))) objects[o].image = "button";
+            if (!o.includes("t") && (o.split("_")[1] == 1 ||
+                (currentWorld()[parseInt(o.split("_")[1]) - 2] != undefined
+                    && game.completedLevels.includes(currentWorld()[parseInt(o.split("_")[1]) - 2].getSaveID())))) { // - 2 because it has to be the PREVIOUS
+                objects[o].image = "button";
+            }
             else objects[o].image = "buttonOff";
 
             objects[o].power = !back;
@@ -32,20 +36,27 @@ scenes["worlds"] = new Scene(
         });
         createText("buttonText", 0.5, 0.95, "Back", { size: 40 });
 
-        createButton("world1", 0.5, 0.4, 0.2, 0.2, "world1", () => {
+        createButton("world1", 0.3, 0.4, 0.2, 0.2, "world1", () => {
+            playWorld = 1;
             setTimeout("toggleWorldsLevels(1)", 100);
         }, { quadratic: true, centered: true });
-        createText("world1t", 0.5, 0.7, "World 1", { size: 40, color: "#773D00" });
+        createText("world1t", 0.3, 0.7, "World 1", { size: 40, color: "#773D00" });
 
-        createContainer("containerLevels", 0, 0.4, 1, 0.5, { XScroll: false, XLimit: [0.001, 3] }, []);
+        createButton("world2", 0.7, 0.4, 0.2, 0.2, "world2", () => {
+            playWorld = 2;
+            setTimeout("toggleWorldsLevels(2)", 100);
+        }, { quadratic: true, centered: true });
+        createText("world2t", 0.7, 0.7, "World 2", { size: 40, color: "#773D00" });
 
-        let w = 0.15;
-        for (let i = 1; i <= 5; i++) {
+        createContainer("containerLevels", 0, 0.3, 1, 0.5, { XScroll: true, XLimit: [0.001, 3], power: true }, []);
+
+        let w = 0.1;
+        for (let i = 1; i <= 10; i++) {
             createButton("level_" + i, 0.125 + ((i - 1) * w), 0.45, w, w, "button", function() {
                 if (this.image == "button" && this.power) {
                     loadLevel(i);
                 }
-            }, { power: false });
+            }, { power: false, alpha: 1 });
             createText("level_" + i + "t", 0.125 + ((i - 1) * w) + (w / 2), 0.45 + (w * 2/3), i, { size: 40, color: "#773D00", power: false });
             objects["level_" + i].power = false;
             objects["level_" + i + "t"].power = false;
@@ -54,10 +65,10 @@ scenes["worlds"] = new Scene(
             objects["containerLevels"].children.push("level_" + i + "t");
         }
 
-        if (!isMobile()) objects["containerLevels"].XLimit[1] = 0.002;
-        else {
-            objects["containerLevels"].XLimit[1] = objects["containerLevels"].children.length / 2 * w;
-        }
+        createImage("king", 0.5, 0.4, 0.2, 0.2, "king", { quadratic: true, centered: true, alpha: game.completedLevels.length == 20 });
+        createText("world2t", 0.7, 0.7, "World 2", { size: 40, color: "#773D00" });
+
+        objects["containerLevels"].XLimit[1] = objects["containerLevels"].children.length / 2 * w - 0.75;
     },
     (tick) => {
         // Loop

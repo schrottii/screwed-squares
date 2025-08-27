@@ -6,6 +6,7 @@ text   #773D00
 
 var playMode = "";
 var playLevel = -1;
+var playWorld = -1;
 
 scenes["mainmenu"] = new Scene(
     () => {

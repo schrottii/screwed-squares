@@ -5,6 +5,7 @@ scenes["settings"] = new Scene(
             objects["settingText1"].text = "Music " + (game.settings.music ? "ON" : "OFF");
             objects["settingText2"].text = "Sounds " + (game.settings.sounds ? "ON" : "OFF");
             objects["settingText3"].text = game.completedLevels.length == 0 ? "-" : "Reset Worlds";
+            objects["settingText4"].text = "Hardmode " + (game.settings.hardmode ? "ON" : "OFF");
 
             //objects["settingText2"].text = "Device " + game.settings.device.substr(0, 1).toUpperCase() + game.settings.device.substr(1);
         }
@@ -40,6 +41,12 @@ scenes["settings"] = new Scene(
             }
         });
         createText("settingText3", 0.5, 0.675, "?", { size: 40 });
+
+        createButton("setting4", 0.3, 0.75, 0.4, 0.1, "button", () => {
+            game.settings.hardmode = !game.settings.hardmode;
+            updateSettings();
+        });
+        createText("settingText4", 0.5, 0.825, "?", { size: 40 });
 
         /*
         createButton("setting2", 0.3, 0.45, 0.4, 0.1, "button", () => {

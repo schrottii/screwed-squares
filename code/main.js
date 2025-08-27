@@ -3,12 +3,17 @@ images = {
     "button": "button.png",
     "buttonOff": "buttonOff.png",
     "squares": "squares.png",
+    "king": "king.png",
 
     "screw1": "screw1.png",
     "screw2": "screw2.png",
     "screw3": "screw3.png",
 
     "world1": "world1.png",
+    "world2": "world2.png",
+
+    "world1_bg": "world1_bg.png",
+    "world2_bg": "world2_bg.png",
 
     whiteDiscord: "white-dc-logo.png",
     whiteNotes: "white-patch-notes.png",

@@ -24,6 +24,7 @@ class SaveGame {
             music: true,
             sounds: true,
             device: "automatic",
+            hardmode: false
         }
         this.completedLevels = [];
     }
