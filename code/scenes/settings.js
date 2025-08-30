@@ -16,6 +16,7 @@ scenes["settings"] = new Scene(
 
         // Back button
         createButton("backbutton", 0.4, 0.875, 0.2, 0.1, "button", () => {
+            buttonClick();
             save();
             loadScene("mainmenu");
         });
@@ -23,18 +24,21 @@ scenes["settings"] = new Scene(
 
         // Settings
         createButton("setting1", 0.3, 0.3, 0.4, 0.1, "button", () => {
+            buttonClick();
             game.settings.music = !game.settings.music;
             updateSettings();
         });
         createText("settingText1", 0.5, 0.375, "?", { size: 40 });
 
         createButton("setting2", 0.3, 0.45, 0.4, 0.1, "button", () => {
+            buttonClick();
             game.settings.sounds = !game.settings.sounds;
             updateSettings();
         });
         createText("settingText2", 0.5, 0.525, "?", { size: 40 });
 
         createButton("setting3", 0.3, 0.6, 0.4, 0.1, "button", () => {
+            buttonClick();
             if (confirm("Do you really want to reset your progress in Worlds? (Stats are kept)") == true) {
                 game.completedLevels = [];
                 updateSettings();
@@ -43,6 +47,7 @@ scenes["settings"] = new Scene(
         createText("settingText3", 0.5, 0.675, "?", { size: 40 });
 
         createButton("setting4", 0.3, 0.75, 0.4, 0.1, "button", () => {
+            buttonClick();
             game.settings.hardmode = !game.settings.hardmode;
             updateSettings();
         });

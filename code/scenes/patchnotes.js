@@ -1,17 +1,16 @@
-var gameVersion = "1.2";
-var newestVersion = 3;
+var gameVersion = "1.2.1";
+var newestVersion = 4;
 var selectedVersion = newestVersion;
 
 const patchnotes = {
     "v1.0":
-    [
         `
+2025-04-14 v1.0:
 - Game release
-`
-        ],
+`,
+
     "v1.1":
-        [
-            `
+        `
 2025-08-16 v1.1:
 -> Worlds:
 - A new way to play the game! Instead of endless random spawns, play fixed levels
@@ -32,11 +31,10 @@ const patchnotes = {
 - Added Patch Notes menu
 - Added buttons for Worlds and Patch Notes to main menu
 - Increased max. name length from 12 to 16
-`
-        ],
+`,
+
     "v1.1.1":
-        [
-            `
+        `
 2025-08-18 v1.1.1:
 -> Worlds:
 - New Setting: Reset Worlds progress
@@ -48,11 +46,10 @@ const patchnotes = {
 - Added stats for Worlds
 - Improved text scaling
 - Slightly changed Unlimited Mode Square spawning (x-axis)
-`
-        ],
+`,
+
     "v1.2":
-        [
-            `
+        `
 2025-08-27 v1.2:
 -> Worlds:
 - World 1: added levels 6 - 10
@@ -77,8 +74,16 @@ const patchnotes = {
 - Added animation for Screws appearing
 - Added animation for win screen
 - Updated WGGJ from v1.3 to v1.4.1
+`,
+
+    "v1.2.1":
+        `
+2025-08-30 v1.2.1:
+- Worlds: added Next button to directly go to the next level (if you won and there is one)
+- Added sound effect for clicking on buttons
+- Added falling screws to the main menu
+- Smaller improvements
 `
-        ]
 }
 
 scenes["patchnotes"] = new Scene(
@@ -90,6 +95,7 @@ scenes["patchnotes"] = new Scene(
 
         // Back button
         createButton("backbutton", 0.4, 0.875, 0.2, 0.1, "button", () => {
+            buttonClick();
             loadScene("mainmenu");
         });
         createText("buttonText", 0.5, 0.95, "Back", { size: 40 });
@@ -99,12 +105,14 @@ scenes["patchnotes"] = new Scene(
         createSquare("midBgSquare", 0.1, 0.2, 0.8, 0.65, "gray");
 
         createButton("goLeft", 0.1, 0.1, 0.1, 0.1, "button", () => {
+            buttonClick();
             if (selectedVersion > 0) selectedVersion -= 1;
             objects["versionText"].text = "Version " + Object.keys(patchnotes)[selectedVersion];
         });
         createText("goLeftText", 0.15, 0.185, "<", { size: 60 });
 
         createButton("goRight", 0.8, 0.1, 0.1, 0.1, "button", () => {
+            buttonClick();
             if (selectedVersion < newestVersion) selectedVersion += 1;
             objects["versionText"].text = "Version " + Object.keys(patchnotes)[selectedVersion];
         });
@@ -120,10 +128,8 @@ scenes["patchnotes"] = new Scene(
         // Loop
 
         let currentVersionText = patchnotes[Object.keys(patchnotes)[selectedVersion]];
-        if (currentVersionText.length == 1) {
-            currentVersionText = currentVersionText[0].split("\n");
-            currentVersionText.shift();
-        }
+        currentVersionText = currentVersionText.split("\n");
+        currentVersionText.shift();
 
         for (vt = 0; vt < 32; vt++) {
             if (vt < currentVersionText.length) {

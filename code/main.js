@@ -73,3 +73,8 @@ function customWGGJInit() {
         game.loadFromSaveGame(JSON.parse(atob(cachedGame.slice(4))));
     }
 }
+
+function buttonClick() {
+    sound.src = "audio/216859__fachii__click_effect.wav";
+    if (game.settings.sounds) sound.play();
+}

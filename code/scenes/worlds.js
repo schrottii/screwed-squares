@@ -31,18 +31,21 @@ scenes["worlds"] = new Scene(
 
         // Back button
         createButton("backbutton", 0.4, 0.875, 0.2, 0.1, "button", () => {
+            buttonClick();
             if (objects["level_1"].power) toggleWorldsLevels(0, true);
             else loadScene("mainmenu");
         });
         createText("buttonText", 0.5, 0.95, "Back", { size: 40 });
 
         createButton("world1", 0.3, 0.4, 0.2, 0.2, "world1", () => {
+            buttonClick();
             playWorld = 1;
             setTimeout("toggleWorldsLevels(1)", 100);
         }, { quadratic: true, centered: true });
         createText("world1t", 0.3, 0.7, "World 1", { size: 40, color: "#773D00" });
 
         createButton("world2", 0.7, 0.4, 0.2, 0.2, "world2", () => {
+            buttonClick();
             playWorld = 2;
             setTimeout("toggleWorldsLevels(2)", 100);
         }, { quadratic: true, centered: true });
@@ -54,6 +57,7 @@ scenes["worlds"] = new Scene(
         for (let i = 1; i <= 10; i++) {
             createButton("level_" + i, 0.125 + ((i - 1) * w), 0.45, w, w, "button", function() {
                 if (this.image == "button" && this.power) {
+                    buttonClick();
                     loadLevel(i);
                 }
             }, { power: false, alpha: 1 });

@@ -8,6 +8,7 @@ scenes["stats"] = new Scene(
         createText("header", 0.5, 0.2, "Stats", { size: 80 });
         createText("playerName", 0.5, 0.3, "Player", { size: 80 });
         createButton("playerNameButton", 0.75, 0.15, 0.05, 0.05, "button", () => {
+            buttonClick();
             let newName = prompt("New player name?", "Peter").slice(0, 16);
             game.name = newName;
         });
@@ -15,18 +16,21 @@ scenes["stats"] = new Scene(
 
         // Back button
         createButton("backbutton", 0.4, 0.875, 0.2, 0.1, "button", () => {
+            buttonClick();
             loadScene("mainmenu");
         });
         createText("buttonText", 0.5, 0.95, "Back", { size: 40 });
 
         // Export button
         createButton("exportbutton", 0.25, 0.7, 0.2, 0.1, "button", () => {
+            buttonClick();
             exportGame();
         });
         createText("buttonText2", 0.35, 0.775, "Export", { size: 40 });
 
         // Import button
         createButton("importbutton", 0.55, 0.7, 0.2, 0.1, "button", () => {
+            buttonClick();
             importGame();
         });
         createText("buttonText3", 0.65, 0.775, "Import", { size: 40 });

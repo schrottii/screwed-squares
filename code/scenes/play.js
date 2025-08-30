@@ -1,6 +1,7 @@
 var round = {
     paused: true,
     over: false,
+    wincase: 0,
 
     timePassed: 0,
     timeAllowed: 30,
@@ -111,7 +112,7 @@ function generateScrew() {
             let me = objects[c];
 
             // don't do anything if disabled or not the front item
-            if (me.power == false || round.paused == true || !me.item.top || me.image != "screw1") {
+            if (me.power == false || round.paused == true || round.over == true || !me.item.top || me.image != "screw1") {
                 sound.volume = 1;
                 sound.src = "audio/242503__gabrielaraujo__failurewrong-action.wav";
                 if (game.settings.sounds) sound.play();
@@ -214,6 +215,7 @@ scenes["play"] = new Scene(
         round = {
             paused: true,
             over: false,
+            wincase: 0,
 
             timePassed: 0,
             timeAllowed: 30,
@@ -277,7 +279,7 @@ scenes["play"] = new Scene(
                         generateTime = 0.200 / (1 + round.screws / 100);
 
                         // sandstorm
-                        if (currentLevel().features["sandstorm"] != undefined) {
+                        if (playMode == "worlds" && currentLevel().features["sandstorm"] != undefined) {
                             for (let s = 0; s < currentLevel().features["sandstorm"].amount; s++) {
                                 generateSandkorn(s);
                             }
@@ -314,23 +316,53 @@ scenes["play"] = new Scene(
 
         objects["screwsAmount"].text = "Screws: " + round.screws;
 
-        // Win
-        if (playMode == "worlds" && round.generatedItems >= currentLevel().squares.length && round.activeItems == 0 && !round.over) {
+        // Win / lose
+        if (playMode == "worlds" && round.generatedItems >= currentLevel().squares.length && round.activeItems == 0 && !round.over) round.wincase = 1; // win
+        if (round.timePassed >= round.timeAllowed && !round.over) round.wincase = 2; // lose
+
+        if (round.wincase != 0 && !round.over) {
             // you got 'em all
             round.paused = true;
             round.over = true;
 
+            let canNext = playMode == "worlds" && (game.completedLevels.includes(currentLevel().getSaveID()) || round.wincase == 1) && currentWorld()[playLevel + 1] != undefined;
 
             createImage("diaBg", 0.1, 0.3, 0.8, 0.4, "button");
-            createText("diaTxt", 0.5, 0.4, "You win", { size: 48, color: "#773D00" });
+            createText("diaTxt", 0.5, 0.4, round.wincase == 1 ? "You win" : "Game over", { size: 48, color: "#773D00" });
             createText("diaTxt2", 0.5, 0.45, "Screws: " + round.screws, { size: 48, color: "#773D00" });
             createText("diaTxt3", 0.5, 0.5, "Time: " + round.timePassed.toFixed(0) + "s", { size: 48, color: "#773D00" });
-            createButton("diaButton", 0.2, 0.55, 0.6, 0.1, "button", () => {
-                if (playMode == "worlds") game.stats.woCompletions++;
-                if (playMode == "worlds" && !game.completedLevels.includes(currentLevel().getSaveID())) game.completedLevels.push(currentLevel().getSaveID());
+            createButton("diaButton", 0.2, 0.55, canNext ? 0.3 : 0.6, 0.1, "button", () => {
+                buttonClick();
+                if (round.wincase == 1 && playMode == "worlds") { // win
+                    game.stats.woCompletions++;
+                    if (!game.completedLevels.includes(currentLevel().getSaveID())) game.completedLevels.push(currentLevel().getSaveID());
+                }
+                else { // lose
+                    if (playMode == "worlds") game.stats.woFails++;
+                }
                 leavePlay();
             });
-            createText("diaButtonTxt", 0.5, 0.625, "Return", { size: 48, color: "#773D00" });
+            createText("diaButtonTxt", canNext ? 0.35 : 0.5, 0.625, "Return", { size: 48, color: "#773D00" });
+
+            if (canNext) {
+                createButton("diaButton2", 0.5, 0.55, 0.3, 0.1, "button", () => {
+                    if (playMode == "worlds") {
+                        buttonClick();
+
+                        game.stats.woCompletions++;
+                        if (!game.completedLevels.includes(currentLevel().getSaveID())) game.completedLevels.push(currentLevel().getSaveID());
+
+                        playLevel = playLevel + 1;
+
+                        loadScene("worlds");
+                        loadScene("play");
+                    }
+                });
+                createText("diaButton2Txt", 0.65, 0.625, "Next", { size: 48, color: "#773D00" });
+
+                createAnimation("winAni7", "diaButton2", (t, d, a) => t.y = 0.55 - 1 * (1 - (a.dur / a.maxDur)), 1);
+                createAnimation("winAni8", "diaButton2Txt", (t, d, a) => t.y = 0.625 - 1 * (1 - (a.dur / a.maxDur)), 1);
+            }
 
             createAnimation("winAni1", "diaBg", (t, d, a) => t.y = 0.3 - 1 * (1 - (a.dur / a.maxDur)), 1);
             createAnimation("winAni2", "diaTxt", (t, d, a) => t.y = 0.4 - 1 * (1 - (a.dur / a.maxDur)), 1);
@@ -338,23 +370,6 @@ scenes["play"] = new Scene(
             createAnimation("winAni4", "diaTxt3", (t, d, a) => t.y = 0.5 - 1 * (1 - (a.dur / a.maxDur)), 1);
             createAnimation("winAni5", "diaButton", (t, d, a) => t.y = 0.55 - 1 * (1 - (a.dur / a.maxDur)), 1);
             createAnimation("winAni6", "diaButtonTxt", (t, d, a) => t.y = 0.625 - 1 * (1 - (a.dur / a.maxDur)), 1);
-        }
-
-        // Game over
-        if (round.timePassed >= round.timeAllowed && !round.over) {
-            round.paused = true;
-            round.over = true;
-
-
-            createImage("diaBg", 0.1, 0.3, 0.8, 0.4, "button");
-            createText("diaTxt", 0.5, 0.4, "Game over", { size: 48, color: "#773D00" });
-            createText("diaTxt2", 0.5, 0.45, "Screws: " + round.screws, { size: 48, color: "#773D00" });
-            createText("diaTxt3", 0.5, 0.5, "Time: " + round.timePassed.toFixed(0) + "s", { size: 48, color: "#773D00" });
-            createButton("diaButton", 0.2, 0.55, 0.6, 0.1, "button", () => {
-                if (playMode == "worlds") game.stats.woFails++;
-                leavePlay();
-            });
-            createText("diaButtonTxt", 0.5, 0.625, "Return", { size: 48, color: "#773D00" });
         }
     }
 );
