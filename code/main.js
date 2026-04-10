@@ -20,8 +20,8 @@ images = {
     whiteWebsite: "white-website.png",
     whiteStats: "white-stats.png",
 }
-FONT = "Raleway";
-GAMENAME = "Screwed Squares";
+wggj.config.font = "Raleway";
+wggj.config.gameName = "Screwed Squares";
 wggjLoadImages();
 wggjLoop();
 
@@ -29,9 +29,6 @@ function customWGGJLoop(tick) {
     game.stats.playtime += tick / 1000;
 }
 
-function wggjUpdateTextScaling() {
-    wggjTextScaling = 0.25 + 0.5 * (wggjCanvasWidth / 1480);
-}
 
 var sound = document.getElementById("sound");
 var sound2 = document.getElementById("sound2");
@@ -39,7 +36,7 @@ var sound2 = document.getElementById("sound2");
 function isMobile() {
     if (game.settings.device == "pc") return false;
     if (game.settings.device == "mobile") return true;
-    return /Mobi/i.test(window.navigator.userAgent) || wggjCanvasWidth <= 480;
+    return /Mobi/i.test(window.navigator.userAgent) || wggj.canvas.w <= 480;
 }
 
 function save() {
